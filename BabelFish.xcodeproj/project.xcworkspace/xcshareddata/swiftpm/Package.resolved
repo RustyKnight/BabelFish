@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "coreextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RustyKnight/CoreExtensions",
+      "state" : {
+        "branch" : "master",
+        "revision" : "89dcc24cf35920d34525b6a31b058b3705a6291b"
+      }
+    },
+    {
+      "identity" : "rainbow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Rainbow",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3"
+      }
+    },
+    {
+      "identity" : "swifthash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onmyway133/SwiftHash",
+      "state" : {
+        "revision" : "a900fc3f33c67eb33c9e650651edf6e23a410b3c",
+        "version" : "2.0.2"
+      }
+    }
+  ],
+  "version" : 2
+}
