@@ -8,26 +8,6 @@
 import Foundation
 import CoreExtensions
 
-enum BundleSource {
-    case remoteLocalization
-    case main
-    
-    static func from(_ value: String) -> BundleSource? {
-        switch value.lowercased() {
-        case "remoteLocalization": return .remoteLocalization
-        case "main": return .main
-        default: return nil
-        }
-    }
-    
-    var value: String {
-        switch self {
-        case .remoteLocalization: return ".workjamRemoteLocalization"
-        case .main: return ".module"
-        }
-    }
-}
-
 enum FormatSpecifier {
     case any // %@
     case integer // %d/%D
@@ -107,7 +87,7 @@ enum FormatSpecifier {
 }
 
 struct LocalizedKeyTerm {
-    let bundle: BundleSource
+    let bundle: String
     let key: String
     let terms: [String]
     let formatSpecifiers: [FormatSpecifier]
@@ -118,10 +98,10 @@ protocol LocalisationParser {
 }
 
 class LocalizedStringsParser: LocalisationParser {
-    let bundleSource: BundleSource
+    let bundleSource: String
     let sourceURL: URL
     
-    init(bundleSource: BundleSource, sourcePath: String) {
+    init(bundleSource: String, sourcePath: String) {
         self.bundleSource = bundleSource
         sourceURL = URL(fileURLWithPath: sourcePath)
     }
@@ -166,10 +146,10 @@ class LocalizedStringsParser: LocalisationParser {
 }
 
 class LocalizedDictionaryParser: LocalisationParser {
-    let bundleSource: BundleSource
+    let bundleSource: String
     let sourceURL: URL
     
-    init(bundleSource: BundleSource, sourcePath: String) {
+    init(bundleSource: String, sourcePath: String) {
         self.bundleSource = bundleSource
         sourceURL = URL(fileURLWithPath: sourcePath)
     }

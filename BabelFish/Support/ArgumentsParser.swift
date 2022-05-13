@@ -9,7 +9,7 @@ import Foundation
 import CoreExtensions
 
 enum ArgumentProperties {
-    case bundle(_ bundle: BundleSource, path: String)
+    case bundle(_ bundle: String, path: String)
 }
 
 struct ArgumentsParser {
@@ -23,17 +23,26 @@ struct ArgumentsParser {
             throw Error.noArguments
         }
         var properties = [ArgumentProperties]()
-        for var index in 1..<arguments.count {
-            let value = arguments[index].replacingOccurrences(of: "--", with: "")
-            if let bundle = BundleSource.from(value) {
-                guard index + 1 < arguments.count else {
-                    warning("Bundle \(value.bold) is missing an associated resource path")
-                    continue
-                }
+        var index = 1
+        while index < arguments.count {
+            defer {
                 index += 1
-                let path = arguments[index]
-                properties.append(.bundle(bundle, path: path))
             }
+            guard arguments[index].hasPrefix("--") else {
+                warning("\(index) Skipping \(arguments[index])")
+                continue;
+            }
+            var bundle = arguments[index].replacingOccurrences(of: "--", with: "")
+            if !bundle.hasPrefix(".") {
+                bundle = "." + bundle
+            }
+            index += 1
+            guard index < arguments.count else {
+                warning("Bundle \(bundle.bold) is missing an associated resource path")
+                continue
+            }
+            let path = arguments[index]
+            properties.append(.bundle(bundle, path: path))
         }
         
         return properties

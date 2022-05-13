@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--main /Users/shane.whitehead/Development/WorkJam/ENGAGE-13048-channel-markers/Localization/Sources/Localization/Resources"
+            argument = "--localLocalisation /Users/shane.whitehead/Development/WorkJam/ENGAGE-13048-channel-markers/Localization/Sources/Localization/Resources "
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

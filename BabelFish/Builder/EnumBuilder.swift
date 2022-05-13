@@ -8,72 +8,23 @@
 import Foundation
 import CoreExtensions
 
-private class Group {
-    let name: String
-    var groups = [String: Group]()
-    var cases = [(String, LocalizedKeyTerm)]()
+class EnumBuilder: AbstractBuilder {
     
-    init(name: String) {
-        self.name = name
-    }
-}
-
-private extension String {
-    func lowercasedFirst() -> String {
-      return prefix(1).lowercased() + self.dropFirst()
-    }
-
-    mutating func lowercaseFirst() {
-      self = self.lowercasedFirst()
-    }
-
-    func uppercasedFirst() -> String {
-      return prefix(1).uppercased() + self.dropFirst()
-    }
-
-    mutating func uppercaseFirst() {
-      self = self.uppercasedFirst()
-    }
-}
-
-private extension FormatSpecifier {
-    var asParameter: String {
-        switch self {
-        case .any: return "CVarArg" // When all else fails
-        case .integer: return "Int"
-        case .unsignedInteger: return "UInt"
-        case .hex: return "UInt"
-        case .octal: return "UInt"
-        case .double: return "Double"
-        case .doubleScientificNotation: return "Double"
-        case .exponent: return "Double"
-        case .unsignedCharacter: return "Character"
-        case .unicharacter: return "Character"
-        case .unsigned8BitCharacters: return "CVarArg"
-        case .unsigned16BitCharacters: return "CVarArg"
-        case .doubleHexScientificNotation: return "Double"
-        case .doubleDecimalNotation: return "Double"
-        }
-    }
-}
-
-class EnumBuilder: Builder {
-
-    private let masterGroup = Group(name: "Strings")
-    
-    func build(_ keyTerms: [LocalizedKeyTerm]) -> String {
-        for keyTerm in keyTerms {
-            group(keyTerm)
-        }
-
+    override func build(_ keyTerms: [LocalizedKeyTerm]) -> String {
         var joiner = StringJoiner(separator: "\n")
+        joiner.append("\(SwiftLint.disable(.fileLength))")
+        joiner.append("import Foundation")
+        joiner.append("")
         joiner.append(localizableProtocol)
         joiner.append("")
         joiner.append(localizableSupportProtocol)
         joiner.append("")
+        joiner.append("\(SwiftLint.disable(.typeBodyLength))")
         joiner.append(buildEnum())
         joiner.append("")
-        joiner.append(buildCaseExtensions())
+        joiner.append(buildCaseExtensions().trailingTrimmed)
+        joiner.append("\(SwiftLint.enable(.typeBodyLength))")
+        joiner.append("\(SwiftLint.enable(.fileLength))")
         return joiner.build()
     }
     
@@ -90,7 +41,7 @@ class EnumBuilder: Builder {
         return value
     }
     
-    private func buildEnum(_ group: Group, indent: String = "") -> String {
+    private func buildEnum(_ group: BuilderGroup, indent: String = "") -> String {
         var joiner = StringJoiner(separator: "\n")
         joiner.append("\(indent)public enum \(fixEnumName(group.name)) {")
         
@@ -107,7 +58,7 @@ class EnumBuilder: Builder {
             joiner.append(buildEnum(subGroup, indent: indent +  "    "))
         }
         joiner.append("\(indent)}")
-        
+
         return joiner.build()
     }
     
@@ -152,7 +103,7 @@ class EnumBuilder: Builder {
         return buildCaseExtensions([], group: masterGroup)
     }
 
-    private func buildCaseExtensions(_ parentKeys: [String], group: Group) -> String{
+    private func buildCaseExtensions(_ parentKeys: [String], group: BuilderGroup) -> String{
         var text = ""
         let cases = group.cases
         var newKeys = parentKeys;
@@ -191,7 +142,7 @@ class EnumBuilder: Builder {
             joiner.append("    var bundle: Bundle {")
             joiner.append("        switch self {")
             for termCase in cases {
-                joiner.append("            case .\(name(termCase)): return \(termCase.1.bundle.value)")
+                joiner.append("            case .\(name(termCase)): return \(termCase.1.bundle)")
             }
             joiner.append("        }")
             joiner.append("    }")
@@ -205,75 +156,7 @@ class EnumBuilder: Builder {
         }
         return text
     }
-    
-    private func cleanKey(_ key: String) -> String {
-        return key
-            .replacingOccurrences(of: "(", with: "")
-            .replacingOccurrences(of: ")", with: "")
-            .replacingOccurrences(of: "%d", with: "")
-            .replacingOccurrences(of: "%@", with: "")
-            .replacingOccurrences(of: "%", with: "")
-            .replacingOccurrences(of: "/", with: "XOfX")
-            .replacingOccurrences(of: "..", with: "")
-            .replacingOccurrences(of: "'", with: "")
-            .replacingOccurrences(of: ":", with: "")
-    }
-    
-    private func keyGroups(from text: String) -> [String] {
-        //key.split(separator: ".").map { String($0) }
-        if text.contains("_") {
-            return text.split(separator: "_").map { String($0) }
-        } else if text.contains(".") {
-            return text.split(separator: ".").map { String($0) }
-        }
-        return []
-    }
-    
-    private func group(_ keyTerm: LocalizedKeyTerm) {
-        let key = cleanKey(keyTerm.key)
-        var groups = keyGroups(from: key)
-        if !groups.isEmpty {
-            let caseName = groups.last!
-            groups = groups.dropLast()
-            let group = findGroup(groups)
-            
-            group.cases.append((caseName, keyTerm))
-        } else {
-            masterGroup.cases.append((keyTerm.key, keyTerm))
-        }
-    }
-    
-    private func findGroup(_ groups: [String]) -> Group {
-        var currentGroup: Group?
-        var keyList = groups
-        while !keyList.isEmpty {
-            let key = keyList.first!
-            currentGroup = groupFor(key, from: currentGroup)
-            keyList = Array(keyList.dropFirst())
-        }
-        return currentGroup!
-    }
 
-    private func groupFor(_ key: String) -> Group {
-        if let group = masterGroup.groups[key] {
-            return group
-        }
-        let group = Group(name: key)
-        masterGroup.groups[key] = group
-        return group
-    }
-
-    private func groupFor(_ key: String, from group: Group?) -> Group {
-        guard let group = group else {
-            return groupFor(key)
-        }
-        if let group = group.groups[key] {
-            return group
-        }
-        let newGroup = Group(name: key)
-        group.groups[key] = newGroup
-        return newGroup
-    }
 }
 
 private let localizableProtocol = """

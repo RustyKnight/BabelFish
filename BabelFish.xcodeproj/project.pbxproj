@@ -16,6 +16,8 @@
 		CE745BBE2801485300533BBD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BBD2801485300533BBD /* Builder.swift */; };
 		CE745BC3280148C400533BBD /* EnumBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BC2280148C400533BBD /* EnumBuilder.swift */; };
 		CE745BC82802724000533BBD /* String+Slice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BC72802724000533BBD /* String+Slice.swift */; };
+		CE7AE45A282B79FA001256EB /* StructBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7AE459282B79FA001256EB /* StructBuilder.swift */; };
+		CEE4D551282DE6990065DAA5 /* SwiftLint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE4D550282DE6990065DAA5 /* SwiftLint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +41,8 @@
 		CE745BBD2801485300533BBD /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		CE745BC2280148C400533BBD /* EnumBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumBuilder.swift; sourceTree = "<group>"; };
 		CE745BC72802724000533BBD /* String+Slice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Slice.swift"; sourceTree = "<group>"; };
+		CE7AE459282B79FA001256EB /* StructBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructBuilder.swift; sourceTree = "<group>"; };
+		CEE4D550282DE6990065DAA5 /* SwiftLint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,8 @@
 			children = (
 				CE745BBD2801485300533BBD /* Builder.swift */,
 				CE745BC2280148C400533BBD /* EnumBuilder.swift */,
+				CE7AE459282B79FA001256EB /* StructBuilder.swift */,
+				CEE4D550282DE6990065DAA5 /* SwiftLint.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -182,8 +188,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEE4D551282DE6990065DAA5 /* SwiftLint.swift in Sources */,
 				CE745BA8280116B200533BBD /* main.swift in Sources */,
 				CE745BC82802724000533BBD /* String+Slice.swift in Sources */,
+				CE7AE45A282B79FA001256EB /* StructBuilder.swift in Sources */,
 				CE745BBC2801277700533BBD /* Support.swift in Sources */,
 				CE745BBA2801264300533BBD /* LocalizedStringsParser.swift in Sources */,
 				CE745BB52801203000533BBD /* ArgumentsParser.swift in Sources */,
