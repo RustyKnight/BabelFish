@@ -66,20 +66,27 @@ struct BabelFish {
             }
             
             for desiredOutput in desiredOutputs {
+                var builder: Builder?
+                var destination: String?
                 switch desiredOutput {
                 case .enum:
-                    let enumBuilder = EnumBuilder(builderGroup: grouped)
-                    let enumStrings = enumBuilder.build(keyTerms).trimmed
-                    let destination = "StringsEnum.swift"
-                    debug("Write enum output to \(destination)")
-                    try enumStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(destination))
+                    builder = EnumBuilder(builderGroup: grouped)
+                    destination = "StringsEnum.swift"
                 case .struct:
-                    let structBuilder = StructBuilder(builderGroup: grouped)
-                    let structStrings = structBuilder.build(keyTerms).trimmed
-                    let destination = "StringsStruct.swift"
-                    debug("Write struct output to \(destination)")
-                    try structStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(destination))
+                    builder = StructBuilder(builderGroup: grouped)
+                    destination = "StringsStruct.swift"
                 }
+                guard let builder = builder else {
+                    warning("No builder available for \(desiredOutput)")
+                    continue
+                }
+                guard let destination = destination else {
+                    warning("No destination specified for \(desiredOutput)")
+                    continue
+                }
+                let build = builder.build(keyTerms).trimmed
+                debug("Write \(desiredOutput) output to \(destination)")
+                try build.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(destination))
             }
         } catch {
             guard error is ArgumentsParser.Error else {
