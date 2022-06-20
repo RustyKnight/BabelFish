@@ -17,7 +17,7 @@ enum Error: Swift.Error {
 }
 
 @main
-struct BabelFish {    
+struct BabelFish {
     static func main() throws {
         do {
             let argumentParser = ArgumentsParser(arguments: CommandLine.arguments)
@@ -70,11 +70,15 @@ struct BabelFish {
                 case .enum:
                     let enumBuilder = EnumBuilder(builderGroup: grouped)
                     let enumStrings = enumBuilder.build(keyTerms).trimmed
-                    try enumStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("StringsEnum.swift"))
+                    let destination = "StringsEnum.swift"
+                    debug("Write enum output to \(destination)")
+                    try enumStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(destination))
                 case .struct:
                     let structBuilder = StructBuilder(builderGroup: grouped)
                     let structStrings = structBuilder.build(keyTerms).trimmed
-                    try structStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("StringsStruct.swift"))
+                    let destination = "StringsStruct.swift"
+                    debug("Write struct output to \(destination)")
+                    try structStrings.data(using: .utf8)!.write(to: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(destination))
                 }
             }
         } catch {
