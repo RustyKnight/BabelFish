@@ -36,7 +36,7 @@ class BuilderGroup {
 
 class BuilderGroupBuilder {
 
-    let masterGroup = BuilderGroup(name: "Strings")
+    let masterGroup = BuilderGroup(name: "Localized")
 
     private init() {
     }

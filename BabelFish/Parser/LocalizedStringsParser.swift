@@ -94,7 +94,7 @@ struct LocalizedKeyTerm {
 }
 
 protocol LocalisationParser {
-    func parse() -> [LocalizedKeyTerm]
+    func parse() throws -> [LocalizedKeyTerm]
 }
 
 class LocalizedStringsParser: LocalisationParser {
@@ -106,11 +106,11 @@ class LocalizedStringsParser: LocalisationParser {
         sourceURL = URL(fileURLWithPath: sourcePath)
     }
     
-    func parse() -> [LocalizedKeyTerm] {
+    func parse() throws -> [LocalizedKeyTerm] {
         let inputURL = sourceURL.appendingPathComponent("en.lproj", isDirectory: true).appendingPathComponent("Localizable.strings")
         guard FileManager.default.fileExists(atPath: inputURL) else {
             warning("\"\(sourceURL.path.bold)\" does not contain \"\("en.lproj/Localizable.strings".bold)\"")
-            return []
+            throw Error.invalidSourcePath
         }
         
         var keyTerms = [LocalizedKeyTerm]()
@@ -154,11 +154,11 @@ class LocalizedDictionaryParser: LocalisationParser {
         sourceURL = URL(fileURLWithPath: sourcePath)
     }
     
-    func parse() -> [LocalizedKeyTerm] {
+    func parse() throws -> [LocalizedKeyTerm] {
         let inputURL = sourceURL.appendingPathComponent("en.lproj", isDirectory: true).appendingPathComponent("Localizable.stringsdict")
         guard FileManager.default.fileExists(atPath: inputURL) else {
             warning("\"\(sourceURL.path.bold)\" does not contain \"\("en.lproj/Localizable.stringsdict".bold)\"")
-            return []
+            throw Error.invalidSourcePath
         }
         notify("Reading localisation strings dictionary from \(inputURL.path)")
         guard let localisactionDict = NSDictionary(contentsOf: inputURL) as? [String: Any] else { return [] }

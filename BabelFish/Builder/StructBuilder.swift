@@ -8,28 +8,28 @@
 import Foundation
 import CoreExtensions
 
-private extension String {
-    func localized(_ bundle: Bundle) -> String {
-        return NSLocalizedString(self, bundle: bundle, comment: "")
-    }
-
-    func localized(arguments: [CVarArg], bundle: Bundle) -> String {
-        return String(format: self, arguments: arguments).localized(bundle)
-    }
-}
-
-struct LocalizedStrings {
-    struct AboutUs {
-        static var heading: String = {
-            return "AboutUs.heading".localized(Bundle.main)
-        }()
-        
-        static func heading(_ p0: Int, _ p1: String) -> String {
-            let arguments: [CVarArg] = [p0, p1]
-            return "AboutUs.heading".localized(arguments: arguments, bundle: .main)
-        }
-    }
-}
+//private extension String {
+//    func localized(_ bundle: Bundle) -> String {
+//        return NSLocalizedString(self, bundle: bundle, comment: "")
+//    }
+//
+//    func localized(arguments: [CVarArg], bundle: Bundle) -> String {
+//        return String(format: self, arguments: arguments).localized(bundle)
+//    }
+//}
+//
+//struct LocalizedStrings {
+//    struct AboutUs {
+//        static var heading: String = {
+//            return "AboutUs.heading".localized(Bundle.main)
+//        }()
+//
+//        static func heading(_ p0: Int, _ p1: String) -> String {
+//            let arguments: [CVarArg] = [p0, p1]
+//            return "AboutUs.heading".localized(arguments: arguments, bundle: .main)
+//        }
+//    }
+//}
 
 class StructBuilder: AbstractBuilder {
     
@@ -89,7 +89,7 @@ class StructBuilder: AbstractBuilder {
         }
         if keyTerm.formatSpecifiers.isEmpty {
             joiner.append("\(indent)public static var \(name(keyCase)): String = {")
-            joiner.append("\(indent)    return \"\(keyTerm.key)\".localized(\(keyTerm.bundle))")
+            joiner.append("\(indent)    return \"\(keyTerm.key)\".localized(Bundle.\(keyTerm.bundle))")
             joiner.append("\(indent)}()")
         } else {
             var parameters = StringJoiner(separator: ", ")
@@ -100,7 +100,7 @@ class StructBuilder: AbstractBuilder {
             }
             joiner.append("\(indent)public static func \(name(keyCase))(\(parameters.build())) -> String {")
             joiner.append("\(indent)    let arguments: [CVarArg] = [\(arguments.build())]")
-            joiner.append("\(indent)    return \"\(keyTerm.key)\".localized(arguments: arguments, bundle: \(keyTerm.bundle))")
+            joiner.append("\(indent)    return \"\(keyTerm.key)\".localized(arguments: arguments, bundle: Bundle.\(keyTerm.bundle))")
             joiner.append("\(indent)}")
         }
         joiner.append("")

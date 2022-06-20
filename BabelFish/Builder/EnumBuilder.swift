@@ -142,7 +142,7 @@ class EnumBuilder: AbstractBuilder {
             joiner.append("    var bundle: Bundle {")
             joiner.append("        switch self {")
             for termCase in cases {
-                joiner.append("            case .\(name(termCase)): return \(termCase.1.bundle)")
+                joiner.append("            case .\(name(termCase)): return Bundle.\(termCase.1.bundle)")
             }
             joiner.append("        }")
             joiner.append("    }")

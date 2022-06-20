@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE745BA8280116B200533BBD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BA7280116B200533BBD /* main.swift */; };
+		CE745BA8280116B200533BBD /* BabelFish.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BA7280116B200533BBD /* BabelFish.swift */; };
 		CE745BB32801175100533BBD /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = CE745BB22801175100533BBD /* Rainbow */; };
 		CE745BB52801203000533BBD /* ArgumentsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE745BB42801203000533BBD /* ArgumentsParser.swift */; };
 		CE745BB82801249A00533BBD /* CoreExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = CE745BB72801249A00533BBD /* CoreExtensions */; };
@@ -34,7 +34,7 @@
 
 /* Begin PBXFileReference section */
 		CE745BA4280116B200533BBD /* BabelFish */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BabelFish; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE745BA7280116B200533BBD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CE745BA7280116B200533BBD /* BabelFish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabelFish.swift; sourceTree = "<group>"; };
 		CE745BB42801203000533BBD /* ArgumentsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentsParser.swift; sourceTree = "<group>"; };
 		CE745BB92801264300533BBD /* LocalizedStringsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringsParser.swift; sourceTree = "<group>"; };
 		CE745BBB2801277700533BBD /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 				CE745BC1280148A700533BBD /* Parser */,
 				CE745BC02801489300533BBD /* Support */,
 				CE745BBF2801488800533BBD /* Builder */,
-				CE745BA7280116B200533BBD /* main.swift */,
+				CE745BA7280116B200533BBD /* BabelFish.swift */,
 			);
 			path = BabelFish;
 			sourceTree = "<group>";
@@ -189,7 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE4D551282DE6990065DAA5 /* SwiftLint.swift in Sources */,
-				CE745BA8280116B200533BBD /* main.swift in Sources */,
+				CE745BA8280116B200533BBD /* BabelFish.swift in Sources */,
 				CE745BC82802724000533BBD /* String+Slice.swift in Sources */,
 				CE7AE45A282B79FA001256EB /* StructBuilder.swift in Sources */,
 				CE745BBC2801277700533BBD /* Support.swift in Sources */,
