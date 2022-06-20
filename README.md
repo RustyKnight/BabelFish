@@ -17,7 +17,7 @@ The intention is to take something like…
 
 and replace it with something more robust, for example…
 
-    placeholderLabel.text = Strings.Label.select.localized()
+    placeholderLabel.text = Localized.Label.select.localized()
 
 This approach would also have support for parameter and plural based localisations, for example...
 
@@ -25,7 +25,7 @@ This approach would also have support for parameter and plural based localisatio
 
 would become
 
-    Strings.TimeOffRequest.Label.typeWith(timeOffSubType.name).localized()
+    Localized.TimeOffRequest.Label.typeWith(timeOffSubType.name).localized()
 
 and 
 
@@ -33,7 +33,7 @@ and
 
 would become 
 
-    Strings.Label.yearsOldPluralWith(Day.today.years(since: birthday)).localized()
+    Localized.Label.yearsOldPluralWith(Day.today.years(since: birthday)).localized()
     
 # Parameters
 
@@ -43,13 +43,13 @@ Localization keys with parameters are inspected and an attempt is made to determ
 
 The project is intended to be able to parse multiple localization sources (bundle based) and generate a `.swift` file which can then be included in the project.
 
-Currently the project can produce a `enum` containing all the localisation keys.  Because of the way `enum` works, it is required that an additional call is needed to perform the actually tranlsation, for example, `Strings.TimeOffRequest.Label.typeWith(timeOffSubType.name)` would require a call to `.localized()` to generate the localized `String`.
+## `enum`
 
-The intention is to also provide a `struct` which would internally generate the localized `String`, so you'd only need to call `Strings.TimeOffRequest.Label.typeWith(timeOffSubType.name)` and the function would automatically load the translation for the specified key.
+This outputs the localisations into groups of `enum`s, under a master `Localized` `enum`
 
-This approach is generally simpler, as the `enum` approach requires a significant more amount of "boiler plate" code (under the hood) to achieve the same result and the `struct` approach will automatically return the `String` without a need for an additional function call.
+Because of the way `enum` works, it is required that an additional call is needed to perform the actually tranlsation, for example, `Localized.TimeOffRequest.Label.typeWith(timeOffSubType.name)` would require a call to `.localized()` to generate the localized `String`.
 
-## `enum` draw backs
+### `enum` draw backs
 
     /// Level (%d/%d)
     case level(_ p0: Int, _ p1: Int)
@@ -68,6 +68,18 @@ Would all be considered the "same" case, to this end, the API needs to make a nu
     case level
 
 We also have the same issue with the plural terms, which means they tend to have `PluralWith` appended to the key name
+
+## `struct`
+
+This outputs the localisations into groups of `struct`s, under a master `Localized` `struct`
+
+This approach internally generates the localized `String`, so you'd only need to call `Localized.TimeOffRequest.Label.typeWith(timeOffSubType.name)` and the function would automatically load the translation for the specified key.
+
+This approach is generally simpler, as the `enum` approach requires a significant amount of additional "boiler plate" code (under the hood) to achieve the same result and the `struct` approach will automatically return the translated `String` without a need for an additional function call.
+
+## Which to use?
+
+Which ever makes the most sense to you
  
 # Helpful hints
 
@@ -92,3 +104,19 @@ The code generator will then make use of this identifier when calling `NSLocaliz
 # What doesn't it do?
 
 The code generator DOES NOT actively monitor for duplicate keys, if duplicate keys do exist, then the resulting code simply won't compile.
+
+# Command line arguments
+
+The intention is to provide as simple an experience as possible, while maintaining the overall goals the project.
+
+The command requires at least three parameters
+
+- `--output`: This specifies the designed output, valid options include `struct` and `enum`
+- `--source`: This is the source path to the directory which contains `en.lproj` directory.  BableFish will use `en.lproj` as a bases for the translations
+- `--bundle`: This is the bundle identifier to use when translating the strings.  In most cases `main` will be acceptable.  If you're combining multiple projects, then each project will need to include it's `Bundle.{identifier}` which can then be specified on the command line.  BableFish will then use `Bundle.{identifier}` in it's output
+
+## Supporting multiple targets
+
+BableFish allows you merge multiple projects together, to do this, the `--source` and `--bundle` allow for an optional numeric identifier (ie `--source1` and `--bundle1`).  The value of the identifier is irrelevent, it's only required that one `--source` and `--bundle` pair have the same identifier, for example...
+
+`BableFish --output struct --source1 path/to/first/project --bundle1 main --source2 path/to/second/project --bundle2 subProject`
