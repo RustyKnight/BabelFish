@@ -117,6 +117,6 @@ The command requires at least three parameters
 
 ## Supporting multiple targets
 
-BableFish allows you merge multiple projects together, to do this, the `--source` and `--bundle` allow for an optional numeric identifier (ie `--source1` and `--bundle1`).  The value of the identifier is irrelevent, it's only required that one `--source` and `--bundle` pair have the same identifier, for example...
+BableFish allows you to merge multiple projects together, to do this, the `--source` and `--bundle` allow for an optional numeric identifier (ie `--source1` and `--bundle1`).  The value of the identifier is irrelevent, it's only required that one `--source` and `--bundle` pair have the same identifier, for example...
 
 `BableFish --output struct --source1 path/to/first/project --bundle1 main --source2 path/to/second/project --bundle2 subProject`
