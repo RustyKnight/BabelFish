@@ -39,7 +39,7 @@ would become
 
 Localization keys with parameters are inspected and an attempt is made to determine the parameter type (based on [String Format Specifiers](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html)), where the parameter type can't be determine, it's parameter type is defaulted to `CVarArg`
 
-# Ouput
+# Output
 
 The project is intended to be able to parse multiple localization sources (bundle based) and generate a `.swift` file which can then be included in the project.
 
